@@ -35,5 +35,9 @@ body {
   border: solid;
   border-width: 5px;
   border-color: gray;
-  padding: 5px;
+}
+
+.rootHeader {
+  display: flex;
+  justify-content: space-evenly;
 }

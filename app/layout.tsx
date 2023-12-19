@@ -16,13 +16,15 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <main>
-      <div>
-      <Link href="/">Main Page</Link>
-      <div></div>
-      <Link href="/example">Example</Link>
-      </div>
-      <body className={inter.className}>{children}</body>
-    </main>
+    <html>
+      <body>
+        <div className="rootHeader">
+          <Link href="/">Main Page</Link>
+          <Link href="/example">Example</Link>
+        </div>
+        <div className={inter.className}>{children}</div>
+      </body>
+      
+    </html>
   )
 }

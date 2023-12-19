@@ -5,7 +5,7 @@ function LetterSquare({letter}: {letter?: string}) {
 }
 
 function Row() {
-  return <div>
+  return <div className="row">
     <LetterSquare/>
     <LetterSquare/>
     <LetterSquare/>
