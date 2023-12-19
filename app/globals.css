@@ -25,3 +25,15 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+.square {
+  display: inline-block;
+  width: 100px;
+  height: 100px;
+  background: white;
+  color: black;
+  border: solid;
+  border-width: 5px;
+  border-color: gray;
+  padding: 5px;
+}
