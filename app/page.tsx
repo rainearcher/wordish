@@ -10,26 +10,31 @@ function LetterSquare({letter=""}: {letter?: string}) {
 }
 
 function Row({text=""} : {text?: string}) {
-  let letters = [];
-  for (let i = 0; i < 5; i++)
-  {
-    if (i < text.length)
-      letters.push({letter: text[i].toUpperCase()});
-    else
-      letters.push({letter: ""});
-  }
+  let letters = text.split("");
+
+  for (let i = text.length; i < 5; i++)
+    letters.push("");
 
   return <div className="flex flex-nowrap justify-center align-center">
-    {letters.map(letterSquare => (
-        <LetterSquare letter={letterSquare.letter}/>
+    {letters.map(letter => (
+        <LetterSquare letter={letter}/>
       ))}
   </div>
 }
 
 function AttemptGrid({input="", curRow=0} : {input?: string, curRow?: number}) {
   const [rows, setRows] = useState<Array<string>>(["", "", "", "", "", ""]);
-  if (rows[curRow] != input)
-  {
+
+  function updateRowsOnInputChange() {
+    if (rowChanged)
+    {
+      setCurRow();
+    }
+  }
+  
+  const rowChanged = rows[curRow] != input;
+
+  function setCurRow() {
     const newRows = rows.map((text, i) => {
       if (i == curRow)
         return input;
@@ -38,7 +43,8 @@ function AttemptGrid({input="", curRow=0} : {input?: string, curRow?: number}) {
     })
     setRows(newRows);
   }
-  
+
+  updateRowsOnInputChange();
   return <div className="flex-col relative justify-center align-center w-96">
     {rows.map(text => (
       <Row text={text}/>
