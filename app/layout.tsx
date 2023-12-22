@@ -19,7 +19,7 @@ export default function RootLayout({
     <html>
       <body>
         <div className="rootHeader">
-          <Link href="/">Main Page</Link>
+          <Link href="/">Wordle</Link>
           <Link href="/example">Example</Link>
         </div>
         <div className={inter.className}>{children}</div>

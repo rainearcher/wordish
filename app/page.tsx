@@ -26,7 +26,7 @@ function Row({text=""} : {text?: string}) {
   </div>
 }
 
-function Grid({input="", curRow=0} : {input?: string, curRow?: number}) {
+function AttemptGrid({input="", curRow=0} : {input?: string, curRow?: number}) {
   const [rows, setRows] = useState<Array<string>>(["", "", "", "", "", ""]);
   if (rows[curRow] != input)
   {
@@ -34,6 +34,9 @@ function Grid({input="", curRow=0} : {input?: string, curRow?: number}) {
     oldRows[curRow] = input;
     setRows(rows);
   }
+  
+  const rowChanged = rows[curRow] != input;
+  
   return <div className="flex-col relative justify-center align-center w-96">
     {rows.map(text => (
       <Row text={text}/>
@@ -68,41 +71,58 @@ function WordleKeyboard({onKeyPress}: {onKeyPress: any}) {
   />)
 }
 
-export default function Home() {
+export default function Wordle() {
   const [input, setInput] = useState("");
   const [curRow, setCurRow] = useState(0);
 
-  let onKeyPress = (button: string): void => {
-    if (button == "{bksp}")
+  function onKeyPress(button: string): void {
+    console.log("button pressed: ", button);
+    if (isBackspaceButton(button))
     {
-      setInput(input.slice(0, -1));
-      console.log("backspace pressed");
+      onBackspacePress();
     }
-    else if (button == "{enter}")
+    
+    else if (isEnterButton(button))
     {
-      console.log("enter key pressed");
-      if (input.length == 5)
-      {
-        setCurRow(Math.min(curRow + 1, 5));
-        setInput("");
-      }
-      else
-        return
+      onEnterPress();
     }
-    else if (input.length == 5)
+
+    else if (maxInputLengthReached)
     {
-      return
+      return;
     }
-    else if (button.length == 1 && button.match(/[a-z]/i))
+
+    else if (isAlphaButton(button))
     {
-      setInput(input + button);
-      console.log("alphabet char pressed");
+      onAlphaPress(button);
     }
-    console.log("ButtonPressed", button);
   }
+
+  const isBackspaceButton = (button: string): boolean => button == "{bksp}";
+
+  const onBackspacePress = (): void => setInput(input.slice(0, -1));
+
+  const isEnterButton = (button: string): boolean => button == "{enter}";
+
+  function onEnterPress(): void {
+    if (curRow < 5 && input.length == 5)
+    {
+      setCurRow(curRow + 1);
+      setInput("");
+    }
+  }
+
+  const maxInputLengthReached = input.length >= 5;
+
+  const isAlphaButton = (button: string): boolean => (
+    button.length == 1 && button.match(/[a-z]/i) != null
+  );
+
+  const onAlphaPress = (button: string): void => setInput(input + button);
+
   return (
   <div className="flex flex-col items-center justify-center h-screen">
-    <Grid input={input} curRow={curRow}/>
+    <AttemptGrid input={input} curRow={curRow}/>
     <WordleKeyboard onKeyPress={onKeyPress}/>
   </div>
   )
