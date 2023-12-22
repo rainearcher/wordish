@@ -27,16 +27,6 @@ body {
     rgb(var(--background-start-rgb));
 }
 
-.home {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  border: solid;
-  border-color: red;
-  height: 100vh;
-}
-
 .rootHeader {
   display: flex;
   justify-content: space-evenly;

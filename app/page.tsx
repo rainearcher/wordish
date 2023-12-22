@@ -1,6 +1,7 @@
 'use client'
 import Keyboard from 'react-simple-keyboard';
 import 'react-simple-keyboard/build/css/index.css';
+import {useState} from 'react';
 
 function LetterSquare({letter}: {letter?: string}) {
   return <div className="flex-grow bg-transparent border-white border-solid border-2 text-black inline-block m-1 aspect-square rounded-md">
@@ -29,9 +30,10 @@ function Grid() {
   </div>
 }
 
-function WordleKeyboard() {
-return (
+function WordleKeyboard({onKeyPress}: {onKeyPress: any}) {
+  return (
   <Keyboard
+    onKeyPress={onKeyPress}
     theme="hg-theme-default keyboard"
     layout={{
       default: [
@@ -56,13 +58,30 @@ return (
 }
 
 export default function Home() {
+  const [input, setInput] = useState("");
+
+  let onKeyPress = (button: any): void => {
+    if (button == "{bksp}")
+    {
+      setInput(input.slice(0, -1));
+      console.log("backspace pressed");
+    }
+    else if (button == "{enter}")
+    {
+      setInput("");
+      console.log("enter key pressed");
+    }
+    else if (button.length == 1 && button.match(/[a-z]/i))
+    {
+      setInput(input + button);
+      console.log("alphabet char pressed");
+    }
+    console.log("ButtonPressed", button);
+  }
   return (
   <div className="flex flex-col items-center justify-center h-screen">
     <Grid/>
-    <WordleKeyboard/>
+    <WordleKeyboard onKeyPress={onKeyPress}/>
   </div>
-    
-    
-    
   )
 }
