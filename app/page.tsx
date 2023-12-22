@@ -3,30 +3,41 @@ import Keyboard from 'react-simple-keyboard';
 import 'react-simple-keyboard/build/css/index.css';
 import {useState} from 'react';
 
-function LetterSquare({letter}: {letter?: string}) {
-  return <div className="flex-grow bg-transparent border-white border-solid border-2 text-black inline-block m-1 aspect-square rounded-md">
+function LetterSquare({letter=""}: {letter?: string}) {
+  return <div className="flex w-20 h-20 bg-transparent border-white border-solid border-2 text-white m-1 rounded-md items-center justify-center text-5xl">
     {letter}
     </div>
 }
 
-function Row() {
-  return <div className="flex relative flex-nowrap">
-    <LetterSquare/>
-    <LetterSquare/>
-    <LetterSquare/>
-    <LetterSquare/>
-    <LetterSquare/>
+function Row({text=""} : {text?: string}) {
+  let letters = [];
+  for (let i = 0; i < 5; i++)
+  {
+    if (i < text.length)
+      letters.push({letter: text[i].toUpperCase()});
+    else
+      letters.push({letter: ""});
+  }
+
+  return <div className="flex flex-nowrap justify-center align-center">
+    {letters.map(letterSquare => (
+        <LetterSquare letter={letterSquare.letter}/>
+      ))}
   </div>
 }
 
-function Grid() {
-  return <div className="flex-col relative text-center w-96">
-    <Row/>
-    <Row/>
-    <Row/>
-    <Row/>
-    <Row/>
-    <Row/>
+function Grid({input="", curRow=0} : {input?: string, curRow?: number}) {
+  const [rows, setRows] = useState<Array<string>>(["", "", "", "", "", ""]);
+  if (rows[curRow] != input)
+  {
+    let oldRows = rows;
+    oldRows[curRow] = input;
+    setRows(rows);
+  }
+  return <div className="flex-col relative justify-center align-center w-96">
+    {rows.map(text => (
+      <Row text={text}/>
+    ))}
   </div>
 }
 
@@ -59,8 +70,9 @@ function WordleKeyboard({onKeyPress}: {onKeyPress: any}) {
 
 export default function Home() {
   const [input, setInput] = useState("");
+  const [curRow, setCurRow] = useState(0);
 
-  let onKeyPress = (button: any): void => {
+  let onKeyPress = (button: string): void => {
     if (button == "{bksp}")
     {
       setInput(input.slice(0, -1));
@@ -68,8 +80,18 @@ export default function Home() {
     }
     else if (button == "{enter}")
     {
-      setInput("");
       console.log("enter key pressed");
+      if (input.length == 5)
+      {
+        setCurRow(Math.min(curRow + 1, 5));
+        setInput("");
+      }
+      else
+        return
+    }
+    else if (input.length == 5)
+    {
+      return
     }
     else if (button.length == 1 && button.match(/[a-z]/i))
     {
@@ -80,7 +102,7 @@ export default function Home() {
   }
   return (
   <div className="flex flex-col items-center justify-center h-screen">
-    <Grid/>
+    <Grid input={input} curRow={curRow}/>
     <WordleKeyboard onKeyPress={onKeyPress}/>
   </div>
   )
