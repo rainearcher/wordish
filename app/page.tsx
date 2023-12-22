@@ -1,11 +1,13 @@
 
 
 function LetterSquare({letter}: {letter?: string}) {
-  return <div className="square">{letter}</div>
+  return <div className="flex-grow bg-transparent border-white border-solid border-2 text-black inline-block m-1 aspect-square rounded-md">
+    {letter}
+    </div>
 }
 
 function Row() {
-  return <div className="row">
+  return <div className="flex relative flex-nowrap">
     <LetterSquare/>
     <LetterSquare/>
     <LetterSquare/>
@@ -15,7 +17,7 @@ function Row() {
 }
 
 function Grid() {
-  return <div style={{display: "block"}}>
+  return <div className="flex-col relative w-screen text-center max-w-screen-sm">
     <Row/>
     <Row/>
     <Row/>
@@ -27,9 +29,9 @@ function Grid() {
 
 export default function Home() {
   return (
-    <main>
+    <div className="home">
       <Grid/>
-    </main>
+    </div>
     
   )
 }
