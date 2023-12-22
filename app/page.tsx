@@ -30,12 +30,14 @@ function AttemptGrid({input="", curRow=0} : {input?: string, curRow?: number}) {
   const [rows, setRows] = useState<Array<string>>(["", "", "", "", "", ""]);
   if (rows[curRow] != input)
   {
-    let oldRows = rows;
-    oldRows[curRow] = input;
-    setRows(rows);
+    const newRows = rows.map((text, i) => {
+      if (i == curRow)
+        return input;
+      else
+        return text;
+    })
+    setRows(newRows);
   }
-  
-  const rowChanged = rows[curRow] != input;
   
   return <div className="flex-col relative justify-center align-center w-96">
     {rows.map(text => (
