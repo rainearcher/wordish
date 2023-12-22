@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import getRandomWord from './supabase';
 
 function LetterSquare({letter=""}: {letter?: string}) {
     return <div className="flex w-20 h-20 bg-transparent border-white border-solid border-2 text-white m-1 rounded-md items-center justify-center text-5xl">

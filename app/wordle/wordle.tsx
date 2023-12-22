@@ -2,21 +2,24 @@
 import {useState, useEffect} from 'react';
 import WordleKeyboard from './wordle-keyboard'
 import AttemptGrid from './attempt-grid';
-import getRandomWord from './supabase';
+import { getRandomWord, isValidWord } from './supabase';
 
 function Wordle() {
     const [input, setInput] = useState("");
     const [curRow, setCurRow] = useState(0);
     const [answer, setAnswer] = useState("");
+    const [gameWon, setGameWon] = useState(false);
     useEffect(() => {
         const fetchWord = async () => {
-            setAnswer(await getRandomWord());
+            const ans = await getRandomWord();
+            console.log(ans.toUpperCase());
+            setAnswer(ans.toUpperCase());
         }
         fetchWord()
             .catch(console.error);
     }, []);
 
-    function onKeyPress(button: string): void {
+    async function onKeyPress(button: string): Promise<void> {
         console.log("button pressed: ", button);
         if (isBackspaceButton(button))
         {
@@ -45,8 +48,14 @@ function Wordle() {
 
     const isEnterButton = (button: string): boolean => button == "{enter}";
 
-    function onEnterPress(): void {
-        if (curRow < 5 && input.length == 5)
+    async function onEnterPress(): Promise<void> {
+        if (input.length < 5)
+            return;
+        if (input == answer)
+            setGameWon(true);
+        const valid = await isValidWord(input);
+        console.log("result of valid: ", valid);
+        if (valid)
         {
             setCurRow(curRow + 1);
             setInput("");
@@ -62,10 +71,11 @@ function Wordle() {
     const onAlphaPress = (button: string): void => setInput(input + button);
 
     return (
-    <div className="flex flex-col items-center justify-center h-screen">
+    !gameWon ? (<div className="flex flex-col items-center justify-center h-screen">
         <AttemptGrid input={input} curRow={curRow}/>
         <WordleKeyboard onKeyPress={onKeyPress}/>
-    </div>
+    </div>) :
+    (<div>you win!</div>)
     )
 }
 
