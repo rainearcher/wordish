@@ -13,8 +13,8 @@ for (let i = text.length; i < 5; i++)
     letters.push("");
 
 return <div className="flex flex-nowrap justify-center align-center">
-    {letters.map(letter => (
-        <LetterSquare letter={letter}/>
+    {letters.map((letter, i) => (
+        <LetterSquare key={i}letter={letter}/>
     ))}
 </div>
 }
@@ -43,8 +43,8 @@ function setCurRow() {
 
 updateRowsOnInputChange();
 return <div className="flex-col relative justify-center align-center w-96">
-    {rows.map(text => (
-    <Row text={text}/>
+    {rows.map((text, i) => (
+    <Row key={i} text={text}/>
     ))}
 </div>
 }
