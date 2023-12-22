@@ -29,33 +29,37 @@ function Grid() {
   </div>
 }
 
+function WordleKeyboard() {
+return (
+  <Keyboard
+    theme="hg-theme-default keyboard"
+    layout={{
+      default: [
+        "Q W E R T Y U I O P",
+        "A S D F G H J K L",
+        "{enter} Z X C V B N M {bksp}"
+      ],
+      
+    }}
+    buttonTheme={[
+      {
+        class: "text-black",
+        buttons: "Q W E R T Y U I O P A S D F G H J K L Z X C V B N M {bksp} {enter}"
+      }
+    ]} 
+    display={{
+      '{bksp}': 'back',
+      '{enter}': 'enter'
+    }}
+
+  />)
+}
+
 export default function Home() {
   return (
   <div className="flex flex-col items-center justify-center h-screen">
     <Grid/>
-    <Keyboard
-      theme="hg-theme-default keyboard"
-      layout={{
-        default: [
-          "Q W E R T Y U I O P",
-          "A S D F G H J K L",
-          "{enter} Z X C V B N M {bksp}"
-        ],
-        
-      }}
-      buttonTheme={[
-        {
-          class: "text-black",
-          buttons: "Q W E R T Y U I O P A S D F G H J K L Z X C V B N M {bksp} {enter}"
-        }
-      ]} 
-      display={{
-        '{bksp}': 'back',
-        '{enter}': 'enter'
-      }}
-      
-    />
-
+    <WordleKeyboard/>
   </div>
     
     
