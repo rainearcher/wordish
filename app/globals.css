@@ -27,36 +27,9 @@ body {
     rgb(var(--background-start-rgb));
 }
 
-.gridSquare {
-  display: inline-block;
-  aspect-ratio: 1/1;
-  flex-grow: 1;
-  background: white;
-  color: black;
-  border: solid;
-}
-
-.gridRow {
-  display: flex;
-  flex-wrap: nowrap;
-  width: var(--grid-row-width);
-}
-
-.grid {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: 100%;
-  align-content: stretch;
-  align-items: center;
-  justify-content: flex-start;
-  border-color: red;
-  border: solid;
-  border-width: 10px;
-}
-
 .home {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
   border: solid;
@@ -67,4 +40,8 @@ body {
 .rootHeader {
   display: flex;
   justify-content: space-evenly;
+}
+
+.keyboard {
+  max-width: 50%;
 }
