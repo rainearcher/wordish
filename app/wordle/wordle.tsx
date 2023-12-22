@@ -1,11 +1,20 @@
 'use client'
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import WordleKeyboard from './wordle-keyboard'
 import AttemptGrid from './attempt-grid';
+import getRandomWord from './supabase';
 
 function Wordle() {
     const [input, setInput] = useState("");
     const [curRow, setCurRow] = useState(0);
+    const [answer, setAnswer] = useState("");
+    useEffect(() => {
+        const fetchWord = async () => {
+            setAnswer(await getRandomWord());
+        }
+        fetchWord()
+            .catch(console.error);
+    }, []);
 
     function onKeyPress(button: string): void {
         console.log("button pressed: ", button);
