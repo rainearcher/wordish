@@ -1,7 +1,7 @@
 import Keyboard from 'react-simple-keyboard';
 import 'react-simple-keyboard/build/css/index.css';
 
-function WordleKeyboard({onKeyPress}: {onKeyPress: any}) {
+function WordleKeyboard({onKeyPress}: {onKeyPress: (s: string) => Promise<void>}) {
     return (
     <Keyboard
         onKeyPress={onKeyPress}
