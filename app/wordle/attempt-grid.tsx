@@ -80,10 +80,11 @@ function AttemptGrid({input="", curRow=0, ans="VALID"} : {input: string, curRow:
         {
             return "green";
         }
-        const locs = getAllLetterIndicesInString(letter, ans);
-        const letterNotInAns = locs.length == 0;
-        const letterHintedInOtherSpotInRow = locs.length == 1 && rows[prevRow].text.substring(0, i).includes(letter);
-        if (letterNotInAns || letterHintedInOtherSpotInRow)
+        const ansLocs = getAllLetterIndicesInString(letter, ans);
+        const letterNotInAns = ansLocs.length == 0;
+        const letterHintedInOtherSpotInRow = ansLocs.length == 1 && rows[prevRow].text.substring(0, i).includes(letter);
+        const letterX3HintedInTwoOtherSpotsInRow = ansLocs.length == 2 && getAllLetterIndicesInString(letter, rows[prevRow].text.substring(0, i));
+        if (letterNotInAns || letterHintedInOtherSpotInRow || letterX3HintedInTwoOtherSpotsInRow)
         {
             return "gray";
         }
