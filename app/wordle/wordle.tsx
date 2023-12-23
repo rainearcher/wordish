@@ -71,11 +71,10 @@ function Wordle() {
     const onAlphaPress = (button: string): void => setInput(input + button);
 
     return (
-    !gameWon ? (<div className="flex flex-col items-center justify-center h-screen">
-        <AttemptGrid input={input} curRow={curRow}/>
+    <div className="flex flex-col items-center justify-center h-screen">
+        <AttemptGrid input={input} curRow={curRow} ans={answer}/>
         <WordleKeyboard onKeyPress={onKeyPress}/>
-    </div>) :
-    (<div>you win!</div>)
+    </div>
     )
 }
 
