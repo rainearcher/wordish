@@ -99,6 +99,13 @@ function AttemptGrid({input="", curRow=0, ans="VALID", setLetterState} : {input:
             return LetterState.Correct;
         }
         const ansLocs = getAllLetterIndicesInString(letter, ans);
+        const rowLocs = getAllLetterIndicesInString(letter, rows[prevRow].text);
+        const letterMoreFreqInAns = ansLocs.length > rowLocs.length;
+        if (letterMoreFreqInAns) {
+            setLetterState(letter, LetterState.Hinted);
+            return LetterState.Hinted;
+        }
+
         const letterNotInAns = ansLocs.length == 0;
         const letterCorrectInOtherSpotInRow = ansLocs.length == 1 && rows[prevRow].text[ansLocs[0]] == letter;
         const letterHintedInOtherSpotInRow = ansLocs.length == 1 && rows[prevRow].text.substring(0, i).includes(letter);
