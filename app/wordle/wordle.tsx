@@ -3,12 +3,14 @@ import {useState, useEffect} from 'react';
 import WordleKeyboard from './wordle-keyboard'
 import AttemptGrid from './attempt-grid';
 import { getRandomWord, isValidWord } from './supabase';
+import { LetterState } from './consts';
 
 function Wordle() {
     const [input, setInput] = useState("");
     const [curRow, setCurRow] = useState(0);
     const [answer, setAnswer] = useState("");
     const [gameWon, setGameWon] = useState(false);
+    const [letterStates, setLetterStates] = useState<Map<string, LetterState>>(new Map<string, LetterState>());
     useEffect(() => {
         const fetchWord = async () => {
             const ans = await getRandomWord();
@@ -70,11 +72,18 @@ function Wordle() {
 
     const onAlphaPress = (button: string): void => setInput(input + button);
 
+    function setLetterState(letter: string, newState: LetterState): void {
+        const curState = letterStates.get(letter);
+        if (!curState || curState < newState) {
+            setLetterStates(new Map(letterStates.set(letter, newState)));
+        }
+    }
+
     return (
     <div className="flex flex-col items-center justify-center self-center"
         style={{width: "min(500px, 100dvw)", height: "min(90dvh, 1000px)"}}>
         <AttemptGrid input={input} curRow={curRow} ans={answer}/>
-        <WordleKeyboard onKeyPress={onKeyPress}/>
+        <WordleKeyboard onKeyPress={onKeyPress} stateMap={letterStates}/>
     </div>
     )
 }

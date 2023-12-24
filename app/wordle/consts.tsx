@@ -1,6 +1,6 @@
 export enum LetterState {
-    Correct,
-    Hinted,
-    Incorrect,
-    Unguessed
+    Correct = 4,
+    Hinted = 3,
+    Incorrect = 2,
+    Unguessed = 1
 }

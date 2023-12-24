@@ -7,6 +7,9 @@
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
   --grid-row-width: clamp(100px, 90%, 600px);
+  --wordle-correct-rgba: 0, 128, 0, 1;
+  --wordle-hinted-rgba: 194, 185, 15, 0.803;
+  --wordle-incorrect-rgba: 128, 128, 128, 1;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -31,4 +34,23 @@ body {
 .rootHeader {
   display: flex;
   justify-content: space-evenly;
+}
+
+.simple-keyboard.hg-layout-default .hg-button {
+  color: black;
+}
+
+.simple-keyboard.hg-layout-default .hg-button.correct {
+  background: rgba(var(--wordle-correct-rgba));
+  color: white;
+}
+
+.simple-keyboard.hg-layout-default .hg-button.incorrect {
+  background: rgba(var(--wordle-incorrect-rgba));
+  color: white;
+}
+
+.simple-keyboard.hg-layout-default .hg-button.hinted {
+  background: rgba(var(--wordle-hinted-rgba));
+  color: white;
 }

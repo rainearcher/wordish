@@ -1,0 +1,11 @@
+.letter-correct {
+    background: green;
+}
+
+.letter-hinted {
+    background-color: "yellow";
+}
+
+.letter-incorrect {
+    background-color: gray;
+}
