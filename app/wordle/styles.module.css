@@ -1,13 +1,13 @@
 .letter-correct {
-    background: green;
+    background: rgba(var(--wordle-correct-rgba));
 }
 
 .letter-hinted {
-    background: yellow;
+    background: rgba(var(--wordle-hinted-rgba));
 }
 
 .letter-incorrect {
-    background: gray;
+    background: rgba(var(--wordle-incorrect-rgba));
 }
 
 .letter-unguessed {
