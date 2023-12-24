@@ -3,9 +3,13 @@
 }
 
 .letter-hinted {
-    background-color: "yellow";
+    background: yellow;
 }
 
 .letter-incorrect {
-    background-color: gray;
+    background: gray;
+}
+
+.letter-unguessed {
+    background: transparent;
 }
