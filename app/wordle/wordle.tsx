@@ -5,11 +5,15 @@ import AttemptGrid from './attempt-grid';
 import { getRandomWord, isValidWord } from './supabase';
 import { LetterState } from './consts';
 
+function Answer({ans} : {ans: string}) {
+    return <div>{`The answer was ${ans}.`}</div>
+}
+
 function Wordle() {
     const [input, setInput] = useState("");
     const [curRow, setCurRow] = useState(0);
     const [answer, setAnswer] = useState("");
-    const [gameWon, setGameWon] = useState(false);
+    const [gameEnd, setGameEnd] = useState(false);
     const [letterStates, setLetterStates] = useState<Map<string, LetterState>>(new Map<string, LetterState>());
     useEffect(() => {
         const fetchWord = async () => {
@@ -23,6 +27,8 @@ function Wordle() {
 
     async function onKeyPress(button: string): Promise<void> {
         console.log("button pressed: ", button);
+        if (gameEnd)
+            return;
         if (isBackspaceButton(button))
         {
             onBackspacePress();
@@ -54,7 +60,7 @@ function Wordle() {
         if (input.length < 5)
             return;
         if (input == answer)
-            setGameWon(true);
+            setGameEnd(true);
         const valid = await isValidWord(input);
         console.log("result of valid: ", valid);
         if (valid)
@@ -62,6 +68,8 @@ function Wordle() {
             setCurRow(curRow + 1);
             setInput("");
         }
+        if (curRow == 5)
+            setGameEnd(true);
     }
 
     const maxInputLengthReached = input.length >= 5;
@@ -84,6 +92,7 @@ function Wordle() {
         style={{width: "min(500px, 100dvw)", height: "min(90dvh, 1000px)"}}>
         <AttemptGrid input={input} curRow={curRow} ans={answer} setLetterState={setLetterState}/>
         <WordleKeyboard onKeyPress={onKeyPress} stateMap={letterStates}/>
+        {gameEnd && <Answer ans={answer}/>}
     </div>
     )
 }
