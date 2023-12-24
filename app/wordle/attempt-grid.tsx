@@ -1,26 +1,26 @@
 import { useState, useEffect } from 'react';
 import { LetterState } from './consts';
+import styles from './styles.module.css'
 
 function LetterSquare({letter="", state=LetterState.Unguessed}: {letter: string, state: LetterState}) {
-    const [color, setColor] = useState("transparent");
+    const [colorClass, setColorClass] = useState(styles['letter-unguessed']);
     useEffect(() => {
-        setColor(getColorFromState());
+        setColorClass(getColorFromState());
     }, [state]);
     function getColorFromState() {
         switch (state) {
             case (LetterState.Correct):
-                return "green";
+                return styles['letter-correct'];
             case (LetterState.Hinted):
-                return "yellow";
+                return styles['letter-hinted'];
             case (LetterState.Incorrect):
-                return "gray";
+                return styles['letter-incorrect'];
             case (LetterState.Unguessed):
-                return "transparent";
+                return styles['letter-unguessed'];
         }
     }
 
-    return <div className={`flex flex-1 border-white border-solid border-2 text-white m-1 rounded-md items-center justify-center text-5xl aspect-square`}
-                style={{backgroundColor: `${color}`}}>
+    return <div className={`${colorClass} flex flex-1 border-white border-solid border-2 text-white m-1 rounded-md items-center justify-center text-5xl aspect-square`}>
             {letter}
             </div>
   }
