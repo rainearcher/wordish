@@ -1,14 +1,31 @@
 import { useState, useEffect } from 'react';
+import { LetterState } from './consts';
 
-function LetterSquare({letter="", color="transparent"}: {letter: string, color: string}) {
-    
+function LetterSquare({letter="", state=LetterState.Unguessed}: {letter: string, state: LetterState}) {
+    const [color, setColor] = useState("transparent");
+    useEffect(() => {
+        setColor(getColorFromState());
+    }, [state]);
+    function getColorFromState() {
+        switch (state) {
+            case (LetterState.Correct):
+                return "green";
+            case (LetterState.Hinted):
+                return "yellow";
+            case (LetterState.Incorrect):
+                return "gray";
+            case (LetterState.Unguessed):
+                return "transparent";
+        }
+    }
+
     return <div className={`flex flex-1 border-white border-solid border-2 text-white m-1 rounded-md items-center justify-center text-5xl aspect-square`}
                 style={{backgroundColor: `${color}`}}>
             {letter}
             </div>
   }
   
-function Row({text="", colors=[]} : {text: string, colors:Array<string>}) {
+function Row({text="", states=[]} : {text: string, states:Array<LetterState>}) {
     let letters = text.split("");
 
     for (let i = text.length; i < 5; i++)
@@ -16,7 +33,7 @@ function Row({text="", colors=[]} : {text: string, colors:Array<string>}) {
 
     return <div className="flex flex-grow flex-nowrap justify-center align-center">
         {letters.map((letter, i) => (
-            <LetterSquare key={i}letter={letter} color={colors ? colors[i] : "transparent"}/>
+            <LetterSquare key={i}letter={letter} state={states ? states[i] : LetterState.Unguessed}/>
         ))}
     </div>
 }
@@ -25,7 +42,7 @@ function AttemptGrid({input="", curRow=0, ans="VALID"} : {input: string, curRow:
     interface RowObject {
         id: number,
         text: string,
-        colors: Array<string>
+        states: Array<LetterState>
     }
     const [rows, setRows] = useState<Array<RowObject>>(getInitialRows());
     const [prevRow, setPrevRow] = useState(0);
@@ -34,7 +51,7 @@ function AttemptGrid({input="", curRow=0, ans="VALID"} : {input: string, curRow:
         let initialRows = [];
         for (let i=0; i < 6; i++)
         {
-            initialRows.push({id: i, text: "", colors: []});
+            initialRows.push({id: i, text: "", states: []});
         }
         return initialRows;
     }
@@ -47,25 +64,25 @@ function AttemptGrid({input="", curRow=0, ans="VALID"} : {input: string, curRow:
     }, [input]);
 
     function updateCurRowWithInput() {
-        updateRow({id: curRow, text: input, colors: rows[curRow].colors});
+        updateRow({id: curRow, text: input, states: rows[curRow].states});
     }
     
     useEffect(() => {
         if (prevRow != curRow)
         {
-            updatePrevRowColors();
+            updatePrevRowStates();
             setPrevRow(curRow);
         }
     }, [curRow]);
 
-    function updatePrevRowColors()
+    function updatePrevRowStates()
     {
-        const rowColors = getPrevRowColors();
+        const rowColors = getPrevRowStates();
         updatePrevRowWithColors(rowColors);
     }
 
-    function getPrevRowColors(): Array<string> {
-        let rowColors: Array<string> = [];
+    function getPrevRowStates(): Array<LetterState> {
+        let rowColors: Array<LetterState> = [];
         for (let i=0; i < 5; i++)
         {
             rowColors.push(getPrevRowIthLetterColor(i));
@@ -73,12 +90,12 @@ function AttemptGrid({input="", curRow=0, ans="VALID"} : {input: string, curRow:
         return rowColors;
     }
 
-    function getPrevRowIthLetterColor(i: number): string {
+    function getPrevRowIthLetterColor(i: number): LetterState {
         const letter = rows[prevRow].text[i];
         const letterMatch = letter === ans[i];
         if (letterMatch)
         {
-            return "green";
+            return LetterState.Correct;
         }
         const ansLocs = getAllLetterIndicesInString(letter, ans);
         const letterNotInAns = ansLocs.length == 0;
@@ -88,9 +105,9 @@ function AttemptGrid({input="", curRow=0, ans="VALID"} : {input: string, curRow:
         if (letterNotInAns || letterCorrectInOtherSpotInRow || 
             letterHintedInOtherSpotInRow || letterX3HintedInTwoOtherSpotsInRow)
         {
-            return "gray";
+            return LetterState.Incorrect;
         }
-        return "yellow";
+        return LetterState.Hinted;
     }
 
     function getAllLetterIndicesInString(letter: string, str: string): Array<number> {
@@ -102,8 +119,8 @@ function AttemptGrid({input="", curRow=0, ans="VALID"} : {input: string, curRow:
         return locs;
     }
 
-    function updatePrevRowWithColors(rowColors: Array<string>) {
-        updateRow({id: prevRow, text: rows[prevRow].text, colors: rowColors});
+    function updatePrevRowWithColors(rowStates: Array<LetterState>) {
+        updateRow({id: prevRow, text: rows[prevRow].text, states: rowStates});
     }
 
     function updateRow(newRow: RowObject) {
@@ -114,7 +131,7 @@ function AttemptGrid({input="", curRow=0, ans="VALID"} : {input: string, curRow:
     return <div className="flex-col relative justify-center align-center w-full"
                 style={{}}>
         {rows.map(row => (
-        <Row key={row.id} text={row.text} colors={row.colors}/>
+        <Row key={row.id} text={row.text} states={row.states}/>
         ))}
     </div>
 }
