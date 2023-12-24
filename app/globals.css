@@ -32,7 +32,3 @@ body {
   display: flex;
   justify-content: space-evenly;
 }
-
-.keyboard {
-  max-width: 500px;
-}

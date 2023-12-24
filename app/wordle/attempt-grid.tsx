@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 
 function LetterSquare({letter="", color="transparent"}: {letter: string, color: string}) {
     
-    return <div className={`flex w-20 h-20 border-white border-solid border-2 text-white m-1 rounded-md items-center justify-center text-5xl`}
+    return <div className={`flex flex-1 border-white border-solid border-2 text-white m-1 rounded-md items-center justify-center text-5xl aspect-square`}
                 style={{backgroundColor: `${color}`}}>
             {letter}
             </div>
@@ -14,7 +14,7 @@ function Row({text="", colors=[]} : {text: string, colors:Array<string>}) {
     for (let i = text.length; i < 5; i++)
         letters.push("");
 
-    return <div className="flex flex-nowrap justify-center align-center">
+    return <div className="flex flex-grow flex-nowrap justify-center align-center">
         {letters.map((letter, i) => (
             <LetterSquare key={i}letter={letter} color={colors ? colors[i] : "transparent"}/>
         ))}
@@ -109,7 +109,8 @@ function AttemptGrid({input="", curRow=0, ans="VALID"} : {input: string, curRow:
         setRows(newRows);
     }
 
-    return <div className="flex-col relative justify-center align-center w-96">
+    return <div className="flex-col relative justify-center align-center w-full"
+                style={{}}>
         {rows.map(row => (
         <Row key={row.id} text={row.text} colors={row.colors}/>
         ))}

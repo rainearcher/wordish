@@ -71,7 +71,8 @@ function Wordle() {
     const onAlphaPress = (button: string): void => setInput(input + button);
 
     return (
-    <div className="flex flex-col items-center justify-center h-screen">
+    <div className="flex flex-col items-center justify-center self-center"
+        style={{width: "min(500px, 100dvw)", height: "min(90dvh, 1000px)"}}>
         <AttemptGrid input={input} curRow={curRow} ans={answer}/>
         <WordleKeyboard onKeyPress={onKeyPress}/>
     </div>

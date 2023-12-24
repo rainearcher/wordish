@@ -22,7 +22,14 @@ export default function RootLayout({
           <Link href="/wordle">Wordle</Link>
           <Link href="/example">Example</Link>
         </div>
-        <div className={inter.className}>{children}</div>
+        <div className={inter.className} 
+            style={{
+              display: "flex", 
+              justifyContent: "center", 
+              alignItems: "center"
+              }}>
+          {children}
+        </div>
       </body>
       
     </html>

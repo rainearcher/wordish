@@ -4,8 +4,9 @@ import 'react-simple-keyboard/build/css/index.css';
 function WordleKeyboard({onKeyPress}: {onKeyPress: (s: string) => Promise<void>}) {
     return (
     <Keyboard
+        style = {{maxWidth: "min(500px, 100dvw);"}}
         onKeyPress={onKeyPress}
-        theme="hg-theme-default keyboard"
+        theme="hg-theme-default"
         layout={{
         default: [
             "Q W E R T Y U I O P",
