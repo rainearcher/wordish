@@ -82,7 +82,7 @@ function Wordle() {
     return (
     <div className="flex flex-col items-center justify-center self-center"
         style={{width: "min(500px, 100dvw)", height: "min(90dvh, 1000px)"}}>
-        <AttemptGrid input={input} curRow={curRow} ans={answer}/>
+        <AttemptGrid input={input} curRow={curRow} ans={answer} setLetterState={setLetterState}/>
         <WordleKeyboard onKeyPress={onKeyPress} stateMap={letterStates}/>
     </div>
     )

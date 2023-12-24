@@ -38,7 +38,7 @@ function Row({text="", states=[]} : {text: string, states:Array<LetterState>}) {
     </div>
 }
 
-function AttemptGrid({input="", curRow=0, ans="VALID"} : {input: string, curRow: number, ans: string}) {
+function AttemptGrid({input="", curRow=0, ans="VALID", setLetterState} : {input: string, curRow: number, ans: string, setLetterState: (l: string, s: LetterState) => void}) {
     interface RowObject {
         id: number,
         text: string,
@@ -77,24 +77,25 @@ function AttemptGrid({input="", curRow=0, ans="VALID"} : {input: string, curRow:
 
     function updatePrevRowStates()
     {
-        const rowColors = getPrevRowStates();
-        updatePrevRowWithColors(rowColors);
+        const rowStates = getPrevRowStates();
+        updatePrevRowWithStates(rowStates);
     }
 
     function getPrevRowStates(): Array<LetterState> {
-        let rowColors: Array<LetterState> = [];
+        let rowStates: Array<LetterState> = [];
         for (let i=0; i < 5; i++)
         {
-            rowColors.push(getPrevRowIthLetterColor(i));
+            rowStates.push(getPrevRowIthLetterState(i));
         }
-        return rowColors;
+        return rowStates;
     }
 
-    function getPrevRowIthLetterColor(i: number): LetterState {
+    function getPrevRowIthLetterState(i: number): LetterState {
         const letter = rows[prevRow].text[i];
         const letterMatch = letter === ans[i];
         if (letterMatch)
         {
+            setLetterState(letter, LetterState.Correct);
             return LetterState.Correct;
         }
         const ansLocs = getAllLetterIndicesInString(letter, ans);
@@ -105,8 +106,10 @@ function AttemptGrid({input="", curRow=0, ans="VALID"} : {input: string, curRow:
         if (letterNotInAns || letterCorrectInOtherSpotInRow || 
             letterHintedInOtherSpotInRow || letterX3HintedInTwoOtherSpotsInRow)
         {
+            setLetterState(letter, LetterState.Incorrect);
             return LetterState.Incorrect;
         }
+        setLetterState(letter, LetterState.Hinted);
         return LetterState.Hinted;
     }
 
@@ -119,7 +122,7 @@ function AttemptGrid({input="", curRow=0, ans="VALID"} : {input: string, curRow:
         return locs;
     }
 
-    function updatePrevRowWithColors(rowStates: Array<LetterState>) {
+    function updatePrevRowWithStates(rowStates: Array<LetterState>) {
         updateRow({id: prevRow, text: rows[prevRow].text, states: rowStates});
     }
 
