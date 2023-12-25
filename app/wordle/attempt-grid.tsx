@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { LetterState } from './consts';
 import styles from './styles.module.css'
+import { RowObject } from './consts';
 
 function LetterSquare({letter="", state=LetterState.Unguessed}: {letter: string, state: LetterState}) {
     const [colorClass, setColorClass] = useState(styles['letter-unguessed']);
@@ -38,23 +39,16 @@ function Row({text="", states=[]} : {text: string, states:Array<LetterState>}) {
     </div>
 }
 
-function AttemptGrid({input="", curRow=0, ans="VALID", setLetterState} : {input: string, curRow: number, ans: string, setLetterState: (l: string, s: LetterState) => void}) {
-    interface RowObject {
-        id: number,
-        text: string,
-        states: Array<LetterState>
-    }
-    const [rows, setRows] = useState<Array<RowObject>>(getInitialRows());
-    const [prevRow, setPrevRow] = useState(0);
-
-    function getInitialRows(): Array<RowObject> {
-        let initialRows = [];
-        for (let i=0; i < 6; i++)
-        {
-            initialRows.push({id: i, text: "", states: []});
-        }
-        return initialRows;
-    }
+function AttemptGrid({input="", curRow=0, ans="VALID", setLetterState, rows, setRows, prevRow, setPrevRow} : 
+        {input: string, 
+            curRow: number, 
+            ans: string, 
+            setLetterState: (l: string, s: LetterState) => void,
+            rows: Array<RowObject>,
+            setRows: (rows: Array<RowObject>) => void,
+            prevRow: number,
+            setPrevRow: (prevRow: number) => void
+        }) {
 
     useEffect(() => {
         if (curRow >= 6)

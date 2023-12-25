@@ -4,3 +4,9 @@ export enum LetterState {
     Incorrect = 2,
     Unguessed = 1
 }
+
+export interface RowObject {
+    id: number,
+    text: string,
+    states: Array<LetterState>
+}
