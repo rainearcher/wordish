@@ -5,6 +5,8 @@ import AttemptGrid from './attempt-grid';
 import { getRandomWord, isValidWord } from './supabase';
 import { LetterState } from './consts';
 import { RowObject } from './consts';
+import Modal from 'react-overlays/Modal';
+import styles from './styles.module.css';
 
 function AnswerButton({ans, onClick, className} : {ans: string, onClick: () => void, className?: string}) {
     return <button onClick={onClick} className={className}>{`The answer was ${ans}. Click to play again!`}</button>
@@ -15,6 +17,7 @@ function Wordle() {
     const [curRow, setCurRow] = useState(0);
     const [answer, setAnswer] = useState("");
     const [gameEnd, setGameEnd] = useState(false);
+    const [gameWon, setGameWon] = useState(false);
     const [letterStates, setLetterStates] = useState<Map<string, LetterState>>(new Map<string, LetterState>());
 
     const [rows, setRows] = useState<Array<RowObject>>(getInitialRows());
@@ -75,7 +78,10 @@ function Wordle() {
         if (input.length < 5)
             return;
         if (input == answer)
+        {
             setGameEnd(true);
+            setGameWon(true);
+        }
         const valid = await isValidWord(input);
         console.log("result of valid: ", valid);
         if (valid)
@@ -107,13 +113,14 @@ function Wordle() {
         setCurRow(0);
         fetchAnswer().catch(console.error);
         setGameEnd(false);
+        setGameWon(false);
         setLetterStates(new Map<string, LetterState>());
         setRows(getInitialRows());
         setPrevRow(0);
     }
 
     return (
-    <div className="flex flex-col items-center justify-center self-center"
+    <div className="flex flex-col items-center justify-center self-center relative"
         style={{width: "min(500px, 100dvw)", height: "min(90dvh, 1000px)"}}>
         <AttemptGrid 
             input={input} 
@@ -129,12 +136,17 @@ function Wordle() {
             onKeyPress={onKeyPress} 
             stateMap={letterStates}
         />
-        {gameEnd && 
-        <AnswerButton 
-            ans={answer} 
-            onClick={playAgain} 
-            className="flex justify-between"
-        />}
+        <Modal 
+            show={gameEnd}
+            className={gameWon ? styles['modal-correct'] : styles['modal-incorrect']}
+            contentLabel="Game end!"
+        >
+            <AnswerButton 
+                ans={answer} 
+                onClick={playAgain} 
+                className="flex justify-between"
+            />
+        </Modal>
     </div>
     )
 }

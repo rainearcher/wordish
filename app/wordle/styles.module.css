@@ -13,3 +13,28 @@
 .letter-unguessed {
     background: transparent;
 }
+
+.modal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 10%;
+    background-color: white;
+    color: black;
+    border-radius: 5px;
+    border: solid;
+}
+
+.modal-correct {
+    composes: modal;
+    border-color: rgba(var(--wordle-correct-rgba));
+}
+
+.modal-incorrect {
+    composes: modal;
+    border-color: rgba(var(--wordle-incorrect-rgba));
+}
