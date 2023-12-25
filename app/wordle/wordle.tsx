@@ -82,9 +82,9 @@ function Wordle() {
         {
             setCurRow(curRow + 1);
             setInput("");
+            if (curRow == 5)
+                setGameEnd(true);
         }
-        if (curRow == 5)
-            setGameEnd(true);
     }
 
     const maxInputLengthReached = input.length >= 5;
