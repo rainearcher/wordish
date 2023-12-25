@@ -2,9 +2,9 @@ import { createClient } from '@supabase/supabase-js'
 
 const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!);
 
-export async function getRandomWord(): Promise<string> {
+export async function getRandomAnswer(): Promise<string> {
     let { data: random_words, error } = await supabase
-    .from('random_words')
+    .from('random_answers')
     .select('word')
     .limit(1)
     .single()

@@ -2,7 +2,7 @@
 import {useState, useEffect} from 'react';
 import WordleKeyboard from './wordle-keyboard'
 import AttemptGrid from './attempt-grid';
-import { getRandomWord, isValidWord } from './supabase';
+import { getRandomAnswer, isValidWord } from './supabase';
 import { LetterState } from './consts';
 
 function Answer({ans} : {ans: string}) {
@@ -17,7 +17,7 @@ function Wordle() {
     const [letterStates, setLetterStates] = useState<Map<string, LetterState>>(new Map<string, LetterState>());
     useEffect(() => {
         const fetchWord = async () => {
-            const ans = await getRandomWord();
+            const ans = await getRandomAnswer();
             console.log(ans.toUpperCase());
             setAnswer(ans.toUpperCase());
         }
