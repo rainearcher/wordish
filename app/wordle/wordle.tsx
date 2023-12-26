@@ -121,7 +121,7 @@ function Wordle() {
 
     return (
     <div className="flex flex-col items-center justify-center self-center relative"
-        style={{width: "min(500px, 100dvw)", height: "min(90dvh, 1000px)"}}>
+        style={{width: "min(500px, 100dvw)", height: "min(100dvh, 1000px)"}}>
         <AttemptGrid 
             input={input} 
             curRow={curRow} 
