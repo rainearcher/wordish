@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Rubik:ital@0;1&display=swap');
+
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
@@ -21,6 +23,8 @@
 }
 
 body {
+  font-family: 'Rubik', sans-serif;
+  font-weight: 500;
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(
       to bottom,
@@ -36,7 +40,12 @@ body {
   justify-content: space-evenly;
 }
 
+.simple-keyboard.wordle-keyboard {
+  background-color: transparent;
+}
+
 .simple-keyboard.hg-layout-default .hg-button {
+  background-color: hsl(0, 0%, 76%);
   color: black;
 }
 

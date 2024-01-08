@@ -21,9 +21,9 @@ function LetterSquare({letter="", state=LetterState.Unguessed}: {letter: string,
         }
     }
 
-    return <div className={`${colorClass} flex flex-1 border-white border-solid border-2 text-white m-1 rounded-md items-center justify-center text-5xl aspect-square`}>
+    return <p className={`${colorClass} flex flex-1 border-white border-solid border-2 text-white m-1 rounded-md items-center justify-center text-5xl aspect-square`}>
             {letter}
-            </div>
+            </p>
   }
   
 function Row({text="", states=[]} : {text: string, states:Array<LetterState>}) {

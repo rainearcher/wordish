@@ -26,7 +26,7 @@ function WordleKeyboard({onKeyPress, stateMap}: {onKeyPress: (s: string) => Prom
     <Keyboard
         style = {{maxWidth: "min(500px, 100dvw);"}}
         onKeyPress={onKeyPress}
-        theme="hg-theme-default"
+        theme="hg-theme-default wordle-keyboard"
         layout={{
         default: [
             "Q W E R T Y U I O P",
