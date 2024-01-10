@@ -11,12 +11,16 @@ import java.util.Random;
 
 @RestController
 public class RandomAnswerController {
-
+    private static final List<String> answers = InitAnswersList();
     @GetMapping("/randomanswer")
     public RandomAnswer randomAnswer() {
-        return new RandomAnswer(GetRandomWord());
+        return new RandomAnswer(GetRandomAnswer());
     }
-    private String GetRandomWord() {
+    private String GetRandomAnswer() {
+        int rnd = new Random().nextInt(answers.size());
+        return answers.get(rnd);
+    }
+    private static List<String> InitAnswersList() {
         List<String> answers = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader("answers.csv"))) {
             String word;
@@ -27,7 +31,6 @@ public class RandomAnswerController {
         catch (Exception e) {
             answers.add("VALID");
         }
-        int rnd = new Random().nextInt(answers.size());
-        return answers.get(rnd);
+        return answers;
     }
 }
