@@ -1,5 +1,6 @@
 package com.wordish.backend;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,7 +16,7 @@ public class RandomAnswerController extends WordFileReader{
     public RandomAnswerController() {
         super("answers.csv");
     }
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin
     @GetMapping("/randomanswer")
     public RandomAnswer randomAnswer() {
         return new RandomAnswer(GetRandomAnswer());

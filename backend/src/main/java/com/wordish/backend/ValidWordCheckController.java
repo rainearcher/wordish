@@ -14,7 +14,7 @@ public class ValidWordCheckController extends WordFileReader{
     public ValidWordCheckController() {
         super("words.csv");
     }
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin
     @GetMapping("/validateword")
     public ValidWordCheck validWordCheck(@RequestParam(value="word", defaultValue="valid") String word) {
         if (validWords.contains(word.toLowerCase())) {
