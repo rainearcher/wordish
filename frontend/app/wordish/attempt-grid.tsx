@@ -19,7 +19,8 @@ function LetterSquare({letter="", state=LetterState.Unguessed}: {letter: string,
 
     return (
         <div className={styles.letter}>
-            <div className={state === LetterState.Unguessed ? styles.letterInner : styles.letterInnerFlipped}>
+            <div className={`${state === LetterState.Unguessed ? styles.letterInner : styles.letterInnerFlipped}
+                            ${letter != "" && styles.letterTyped}`}>
                 <div className={styles.letterFront}>
                     {letter}
                 </div>
