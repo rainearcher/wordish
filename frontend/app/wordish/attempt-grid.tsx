@@ -4,26 +4,31 @@ import styles from './styles.module.css'
 import { RowObject } from './consts';
 
 function LetterSquare({letter="", state=LetterState.Unguessed}: {letter: string, state: LetterState}) {
-    const [colorClass, setColorClass] = useState(styles['letter-unguessed']);
-    useEffect(() => {
-        setColorClass(getColorFromState());
-    }, [state]);
-    function getColorFromState() {
+    const getColorFromState = () => {
         switch (state) {
             case (LetterState.Correct):
-                return styles['letter-correct'];
+                return styles.letterCorrect;
             case (LetterState.Hinted):
-                return styles['letter-hinted'];
+                return styles.letterHinted;
             case (LetterState.Incorrect):
-                return styles['letter-incorrect'];
-            case (LetterState.Unguessed):
-                return styles['letter-unguessed'];
+                return styles.letterIncorrect;
+            default:
+                return styles.letterUnguessed;
         }
     }
 
-    return <p className={`${colorClass} flex flex-1 border-white border-solid border-2 text-white m-1 rounded-md items-center justify-center text-5xl aspect-square`}>
-            {letter}
-            </p>
+    return (
+        <div className={styles.letter}>
+            <div className={state === LetterState.Unguessed ? styles.letterInner : styles.letterInnerFlipped}>
+                <div className={styles.letterFront}>
+                    {letter}
+                </div>
+                <div className={`${styles.letterBack} ${getColorFromState()}`}>
+                    {letter}
+                </div>
+            </div>
+        </div>
+    )
   }
   
 function Row({text="", states=[]} : {text: string, states:Array<LetterState>}) {
