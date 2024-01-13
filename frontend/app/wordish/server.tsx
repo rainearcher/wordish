@@ -1,11 +1,16 @@
+'use server'
+
+const backend_url = process.env.BACKEND_URL;
+
 export async function getRandomWord(): Promise<string> {
-    const response = await fetch(process.env.NEXT_PUBLIC_BACKEND_URL + '/randomanswer')
+    const response = await fetch(backend_url + '/randomanswer', { cache: 'no-store' })
     const data = await response.json();
+    console.log(data.answer);
     return data.answer;
 }
 
 export async function isValidWord(word: string): Promise<boolean> {
-    const response = await fetch(process.env.NEXT_PUBLIC_BACKEND_URL! 
+    const response = await fetch(backend_url 
         + '/validateword?' 
         + new URLSearchParams( {
         word: word,
