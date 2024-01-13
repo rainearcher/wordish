@@ -1,9 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { LetterState } from './consts';
 import styles from './styles.module.css'
 import { RowObject } from './consts';
+import { WobbleContext, SetWobbleContext } from './context';
+import { Flamenco } from 'next/font/google';
 
 function LetterSquare({letter="", state=LetterState.Unguessed}: {letter: string, state: LetterState}) {
+    const wobble = useContext(WobbleContext) && letter != "" && state ===LetterState.Unguessed;
+    const setWobble = useContext(SetWobbleContext);
+    
     const getColorFromState = () => {
         switch (state) {
             case (LetterState.Correct):
@@ -18,16 +23,19 @@ function LetterSquare({letter="", state=LetterState.Unguessed}: {letter: string,
     }
 
     return (
-        <div className={styles.letter}>
-            <div className={`${state === LetterState.Unguessed ? styles.letterInner : styles.letterInnerFlipped}
-                            ${letter != "" && styles.letterTyped}`}>
-                <div className={styles.letterFront}>
-                    {letter}
+        <div className={`${styles.letter} ${wobble && styles.letterWobble}`}
+            onAnimationEnd={() => setWobble(false)}>
+            
+                <div className={`${state === LetterState.Unguessed ? styles.letterInner : styles.letterInnerFlipped}
+                                ${letter != "" && styles.letterTyped}`}>
+                    <div className={styles.letterFront}>
+                        {letter}
+                    </div>
+                    <div className={`${styles.letterBack} ${getColorFromState()}`}>
+                        {letter}
+                    </div>
                 </div>
-                <div className={`${styles.letterBack} ${getColorFromState()}`}>
-                    {letter}
-                </div>
-            </div>
+            
         </div>
     )
   }
