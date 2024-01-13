@@ -1,4 +1,25 @@
-.modal {
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    transition-property: all;
+    transition-duration: 1s;
+    transition-delay: 0.75s;
+    transition-timing-function: ease-in-out;
+    opacity: 0;
+    transform: translateY(100px);
+}
+
+.modalOverlayAfterOpen {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.modalContent {
+    opacity: 1;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -7,19 +28,18 @@
     left: 50%;
     transform: translate(-50%, -50%);
     height: 10%;
-    background-color: white;
-    color: black;
+    background-color: #3a3a3c;
+    color: white;
     border-radius: 5px;
     border: solid;
+    padding: 1rem;
 }
 
-.modal-correct {
-    composes: modal;
+.modalCorrect {
     border-color: rgba(var(--wordle-correct-rgba));
 }
 
-.modal-incorrect {
-    composes: modal;
+.modalIncorrect {
     border-color: rgba(var(--wordle-incorrect-rgba));
 }
 
