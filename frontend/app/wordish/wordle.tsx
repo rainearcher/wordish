@@ -2,7 +2,7 @@
 import {useState, useEffect} from 'react';
 import WordleKeyboard from './wordle-keyboard'
 import AttemptGrid from './attempt-grid';
-import { getRandomWord, isValidWord } from './backend';
+import { getRandomWord, isValidWord } from './server';
 import { LetterState } from './consts';
 import { RowObject } from './consts';
 import Modal from 'react-overlays/Modal';
@@ -39,7 +39,6 @@ function Wordle() {
 
     const fetchAnswer = async () => {
         const ans = await getRandomWord();
-        console.log(ans.toUpperCase());
         setAnswer(ans.toUpperCase());
     }
 
