@@ -5,9 +5,9 @@ import AttemptGrid from './attempt-grid';
 import { getRandomWord, isValidWord } from './server';
 import { LetterState } from './consts';
 import { RowObject } from './consts';
-import Modal from 'react-overlays/Modal';
 import styles from './styles.module.css';
 import { WobbleContext, SetWobbleContext } from './context';
+import ReactModal from 'react-modal';
 
 function AnswerButton({ans, onClick, className} : {ans: string, onClick: () => void, className?: string}) {
     return <button onClick={onClick} className={className}>{`The answer was ${ans}. Click to play again!`}</button>
@@ -146,17 +146,22 @@ function Wordle() {
             onKeyPress={onKeyPress} 
             stateMap={letterStates}
         />
-        <Modal 
-            show={gameEnd}
-            className={gameWon ? styles['modal-correct'] : styles['modal-incorrect']}
+        <ReactModal 
+            isOpen={gameEnd}
+            className={`${styles.modalContent} ${gameWon ? styles.modalCorrect : styles.modalIncorrect}`}
+            overlayClassName={{
+                base: styles.modalOverlay,
+                afterOpen: styles.modalOverlayAfterOpen,
+                beforeClose: ""
+            }}
             contentLabel="Game end!"
         >
-            <AnswerButton 
+            {gameEnd && <AnswerButton 
                 ans={answer} 
                 onClick={playAgain} 
                 className="flex justify-between"
-            />
-        </Modal>
+            />}
+        </ReactModal>
     </div>
     )
 }
