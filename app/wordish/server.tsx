@@ -11,6 +11,7 @@ export async function getRandomWord(): Promise<string> {
 }
 
 export async function isValidWord(word: string): Promise<boolean> {
-    const { rows } = await sql`SELECT word FROM answers WHERE word=${word.toLowerCase()}`;
+    noStore();
+    const { rows } = await sql`SELECT word FROM words WHERE word=${word.toLowerCase()}`;
     return rows.length != 0;
 }
