@@ -1,12 +1,13 @@
 'use client'
-import {useState, useEffect} from 'react';
+import {useState, useEffect } from 'react';
 import WordleKeyboard from './wordle-keyboard'
 import AttemptGrid from './attempt-grid';
 import { getRandomWord, isValidWord } from './server';
 import { LetterState } from './consts';
 import { RowObject } from './consts';
-import Modal from 'react-overlays/Modal';
 import styles from './styles.module.css';
+import { WobbleContext, SetWobbleContext } from './context';
+import ReactModal from 'react-modal';
 
 function AnswerButton({ans, onClick, className} : {ans: string, onClick: () => void, className?: string}) {
     return <button onClick={onClick} className={className}>{`The answer was ${ans}. Click to play again!`}</button>
@@ -22,6 +23,8 @@ function Wordle() {
 
     const [rows, setRows] = useState<Array<RowObject>>(getInitialRows());
     const [prevRow, setPrevRow] = useState(0);
+
+    const [wobble, setWobble] = useState(false);
 
     function getInitialRows(): Array<RowObject> {
         let initialRows = [];
@@ -90,7 +93,11 @@ function Wordle() {
             if (curRow == 5)
                 setGameEnd(true);
         }
+        else {
+            setWobble(true);
+        }
     }
+    
 
     const maxInputLengthReached = input.length >= 5;
 
@@ -121,31 +128,40 @@ function Wordle() {
     return (
     <div className="flex flex-col items-center justify-center self-center relative"
         style={{width: "min(500px, 100dvw)", height: "min(100dvh, 1000px)"}}>
-        <AttemptGrid 
-            input={input} 
-            curRow={curRow} 
-            ans={answer} 
-            setLetterState={setLetterState}
-            rows={rows}
-            setRows={setRows}
-            prevRow={prevRow}
-            setPrevRow={setPrevRow}
-        />
+        <WobbleContext.Provider value={wobble}>
+            <SetWobbleContext.Provider value={setWobble}>
+                <AttemptGrid
+                    input={input}
+                    curRow={curRow}
+                    ans={answer}
+                    setLetterState={setLetterState}
+                    rows={rows}
+                    setRows={setRows}
+                    prevRow={prevRow}
+                    setPrevRow={setPrevRow}
+                />
+            </SetWobbleContext.Provider>
+        </WobbleContext.Provider>
         <WordleKeyboard 
             onKeyPress={onKeyPress} 
             stateMap={letterStates}
         />
-        <Modal 
-            show={gameEnd}
-            className={gameWon ? styles['modal-correct'] : styles['modal-incorrect']}
+        <ReactModal 
+            isOpen={gameEnd}
+            className={`${styles.modalContent} ${gameWon ? styles.modalCorrect : styles.modalIncorrect}`}
+            overlayClassName={{
+                base: styles.modalOverlay,
+                afterOpen: styles.modalOverlayAfterOpen,
+                beforeClose: ""
+            }}
             contentLabel="Game end!"
         >
-            <AnswerButton 
+            {gameEnd && <AnswerButton 
                 ans={answer} 
                 onClick={playAgain} 
                 className="flex justify-between"
-            />
-        </Modal>
+            />}
+        </ReactModal>
     </div>
     )
 }
