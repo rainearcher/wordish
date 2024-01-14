@@ -1,17 +1,16 @@
 'use server'
-
-import { promises as fs } from "fs";
+import { sql } from "@vercel/postgres";
+import { unstable_noStore as noStore } from "next/cache";
 
 export async function getRandomWord(): Promise<string> {
-    const file = await fs.readFile(process.cwd() + '/app/wordish/answers.txt', 'utf8');
-    const answers = file.split('\n');
-    const answer = answers[Math.floor(Math.random() * answers.length)].trim();
+    noStore();
+    const { rows } = await sql`SELECT word FROM answers order by random() limit 1`;
+    const answer = rows[0].word;
     console.log(answer);
     return answer;
 }
 
 export async function isValidWord(word: string): Promise<boolean> {
-    const file = await fs.readFile(process.cwd() + '/app/wordish/words.txt', 'utf8');
-    const answers = file.split(/\r*\n/);
-    return answers.includes(word.toLowerCase());
+    const { rows } = await sql`SELECT word FROM answers WHERE word=${word.toLowerCase()}`;
+    return rows.length != 0;
 }
