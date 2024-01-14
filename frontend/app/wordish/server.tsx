@@ -1,20 +1,17 @@
 'use server'
 
-const backend_url = process.env.BACKEND_URL;
+import { promises as fs } from "fs";
 
 export async function getRandomWord(): Promise<string> {
-    const response = await fetch(backend_url + '/randomanswer', { cache: 'no-store' })
-    const data = await response.json();
-    console.log(data.answer);
-    return data.answer;
+    const file = await fs.readFile(process.cwd() + '/app/wordish/answers.txt', 'utf8');
+    const answers = file.split('\n');
+    const answer = answers[Math.floor(Math.random() * answers.length)].trim();
+    console.log(answer);
+    return answer;
 }
 
 export async function isValidWord(word: string): Promise<boolean> {
-    const response = await fetch(backend_url 
-        + '/validateword?' 
-        + new URLSearchParams( {
-        word: word,
-    }).toString());
-    const data = await response.json();
-    return data.check;
+    const file = await fs.readFile(process.cwd() + '/app/wordish/words.txt', 'utf8');
+    const answers = file.split(/\r*\n/);
+    return answers.includes(word.toLowerCase());
 }
